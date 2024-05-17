@@ -1,3 +1,17 @@
 [submodule "JetsonGPIO"]
 	path = JetsonGPIO
 	url = https://github.com/pjueon/JetsonGPIO.git
+[submodule "thirdparty/deepsort-tensorrt"]
+	path = thirdparty/deepsort-tensorrt
+	url = https://github.com/RichardoMrMu/deepsort-tensorrt.git
+[submodule "thirdparty/deep_sort_pytorch"]
+	path = thirdparty/deep_sort_pytorch
+	url = https://github.com/ZQPei/deep_sort_pytorch.git
+[submodule "thirdparty/yolov5"]
+	path = thirdparty/yolov5
+	url = https://github.com/ultralytics/yolov5.git
+	branch = v5.0
+[submodule "thirdparty/tensorrtx"]
+	path = thirdparty/tensorrtx
+	url = https://github.com/wang-xinyu/tensorrtx.git
+	branch = yolov5-v5.0
