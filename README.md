@@ -44,7 +44,7 @@ The entire process time, from reading an image to completing DeepSORT, includes 
 ```shell
 git clone https://github.com/quandang246/Autonomous_Person_Tracking_Car.git
 cd Autonomous_Person_Tracking_Car
-// before you cmake and make, please change ./src/main.cpp char* yolo_engine = ""; char* sort_engine = ""; to your own path
+# before you cmake and make, please change ./src/main.cpp char* yolo_engine = ""; char* sort_engine = ""; to your own path
 mkdir build 
 cmake ..
 make 
@@ -84,7 +84,7 @@ Note that: here uses the official pertained model (yolov5-5, v5.0). In case you 
 cd thirdparty/yolov5
 mkdir weights
 cd weights
-// download https://github.com/ultralytics/yolov5/releases/download/v5.0/yolov5s.pt
+# download https://github.com/ultralytics/yolov5/releases/download/v5.0/yolov5s.pt
 wget https://github.com/ultralytics/yolov5/releases/download/v5.0/yolov5s.pt
 
 ```
@@ -92,27 +92,27 @@ wget https://github.com/ultralytics/yolov5/releases/download/v5.0/yolov5s.pt
 2. **Get tensorrtx and generate .wts from pytorch with .pt**:
 
 ```shell
-// copy gen_wts.py from tensorrtx to yolov5
+# copy gen_wts.py from tensorrtx to yolov5
 cp thirdparty/tensorrtx/yolov5/gen_wts.py thirdparty/yolov5
 cd thirdparty/yolov5
 python3 gen_wts.py -w ./weights/yolov5s.pt -o ./weights/yolov5s.wts
-// a file 'yolov5s.wts' will be generated in thirdparty/yolov5/weights folder
+# a file 'yolov5s.wts' will be generated in thirdparty/yolov5/weights folder
 ```
 
 3. **Build tensorrtx/yolov5 and get tensorrt engine**:
 
 ```shell 
 cd thirdparty/tensorrtx/yolov5
-// update CLASS_NUM in yololayer.h if your model is trained on custom dataset
+# update CLASS_NUM in yololayer.h if your model is trained on custom dataset
 mkdir build
 cd build
-// copy 'yolov5s.wts' to thirdparty/tensorrtx/yolov5/build
+# copy 'yolov5s.wts' to thirdparty/tensorrtx/yolov5/build
 cp thirdparty/yolov5/yolov5s.wts thirdparty/tensorrtx/yolov5/build
 cmake ..
 make
-// yolov5s
+# yolov5s
 sudo ./yolov5 -s yolov5s.wts yolov5s.engine s
-// test your engine file
+# test your engine file
 sudo ./yolov5 -d yolov5s.engine ../samples
 ```
 You can see you dection results in samples folder!
@@ -120,18 +120,18 @@ You can see you dection results in samples folder!
 ### Get deepsort engine file
 1. **Move 'ckpt.t7' file**:
 ```shell 
-// copy 'ckpt.t7' to thirdparty/deep_sort_pytorch
+# copy 'ckpt.t7' to thirdparty/deep_sort_pytorch
 cp assets/ckpt.t7 thirdparty/deep_sort_pytorch
 ```
 
 2. **Convert the PyTorch model to ONNX format**:
 
 ```shell
-// copy exportOnnx.py from thirdparty/deep-tensorrt to thirdparty/deep_sort_pytorch
+# copy exportOnnx.py from thirdparty/deep-tensorrt to thirdparty/deep_sort_pytorch
 cp thirdparty/deepsort-tensorrt/exportOnnx.py thirdparty/deep_sort_pytorch/
 python3 deep_sort_pytorch/exportOnnx.py
-// a file 'deepsort.onnx' will be generated in thirdparty/deep_sort_pytorch/ folder
-// Move the generated deepsort.onnx file to the resources directory inside deepsort-tensorrt
+# a file 'deepsort.onnx' will be generated in thirdparty/deep_sort_pytorch/ folder
+# Move the generated deepsort.onnx file to the resources directory inside deepsort-tensorrt
 mv thirdparty/deep_sort_pytorch/deepsort.onnx thirdparty/deepsort-tensorrt/resources/
 ```
 
@@ -144,14 +144,14 @@ cd build
 cmake ..
 make
 ./onnx2engine ../resources/deepsort.onnx ../resources/deepsort.engine
-// Test the generated engine file
+# Test the generated engine file
 ./demo ../resources/deepsort.engine ../resources/track.txt
 ```
 
 ### Put yolov5s.engine and deepsort.engine in My project
 After 2 sections above , you can get the yolov5s.engine and deepsort.engine.
 ```shell
-// copy yolov5 engine into my project
+# copy yolov5 engine into my project
 cd {Autonomous_Person_Tracking_Car}
 mkdir resources
 cp thirdparty/tensorrtx/yolov5/build/yolov5s.engine {Autonomous_Person_Tracking_Car}/resources
