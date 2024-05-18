@@ -16,15 +16,15 @@ int main()
 	map<int, vector<int>> personstate;
 	map<int, int> classidmap;
 	bool is_first = true;
-	char *yolo_engine = "/home/quandang246/project/yolov5-deepsort-tensorrt/resources/yolov5s.engine";
-	char *sort_engine = "/home/quandang246/project/yolov5-deepsort-tensorrt/resources/deepsort.engine";
+	char *yolo_engine = "/home/quandang246/project/Autonomous_Person_Tracking_Car/resources/yolov5s.engine";
+	char *sort_engine = "/home/quandang246/project/Autonomous_Person_Tracking_Car/resources/deepsort.engine";
 	float conf_thre = 0.4;
 	Trtyolosort yosort(yolo_engine, sort_engine);
 	VideoCapture capture;
 	cv::Mat frame;
 
 	// Path to sample videos
-	frame = capture.open("/home/quandang246/project/yolov5-deepsort-tensorrt/assets/2_peoples.mp4");
+	frame = capture.open("/home/quandang246/project/Autonomous_Person_Tracking_Car/test_videos/1_peoples.mp4");
 	if (!capture.isOpened())
 	{
 		std::cout << "can not open" << std::endl;
