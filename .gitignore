@@ -191,3 +191,5 @@ dmypy.json
 build/
 resources/
 python/
+
+testing/

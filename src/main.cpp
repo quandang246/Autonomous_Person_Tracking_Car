@@ -1,5 +1,6 @@
 #include <iostream>
 #include "manager.hpp"
+#include "car_controller.hpp"
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/opencv.hpp>
@@ -72,5 +73,44 @@ int main()
 		i++;
 	}
 	capture.release();
+
+    // Initalize car
+    car my_car;
+
+    cout << "Strating demo now! Press CTRL+C to exit" << endl;
+    std::cout << "1. Turn right!" << std::endl;
+    std::cout << "2. Turn left!" << std::endl;
+    std::cout << "3. Go forward!" << std::endl;
+    std::cout << "4. Go backward!" << std::endl;
+
+    while (!end_this_program)
+    {
+        int choice;
+        std::cout << "Enter your choice to control the car: " << std::endl;
+        std::cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            my_car.turn_right();
+            break;
+        case 2:
+            my_car.turn_left();
+            break;
+        case 3:
+            my_car.go_forward();
+            break;
+        case 4:
+            my_car.go_backward();
+            break;
+
+        default:
+            std::cout << "Invalid choice, please try again!" << std::endl;
+            break;
+        }
+
+        delay(1);
+    }
+	
 	return 0;
 }
