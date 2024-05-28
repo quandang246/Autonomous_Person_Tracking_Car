@@ -24,7 +24,7 @@ int main()
 	cv::Mat frame;
 
 	// Path to sample videos
-	frame = capture.open("/home/quandang246/project/Autonomous_Person_Tracking_Car/test_videos/1_peoples.mp4");
+	frame = capture.open("/home/quandang246/project/Autonomous_Person_Tracking_Car/test_videos/1_people_and_obstacle.mp4");
 	if (!capture.isOpened())
 	{
 		std::cout << "can not open" << std::endl;
@@ -47,6 +47,7 @@ int main()
 			auto end = std::chrono::system_clock::now();
 			int delay_infer = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 			std::cout << "delay_infer:" << delay_infer << "ms" << std::endl;
+			std::cout << "FPS: "  << 1000.0/delay_infer << std::endl;
 
 			if (!det.empty())
 			{
