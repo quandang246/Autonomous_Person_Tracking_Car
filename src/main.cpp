@@ -13,6 +13,12 @@ using namespace cv;
 
 int main()
 {
+	// Initalize car
+    car my_car;
+
+	// Define threshold frame width = 1280, height = 720
+	int t_x = 630, t_y = 370, t_weight = 20, t_height = 20; 
+
 	// calculate every person's (id,(up_num,down_num,average_x,average_y))
 	map<int, vector<int>> personstate;
 	map<int, int> classidmap;
@@ -52,19 +58,51 @@ int main()
 
 			if (!det.empty())
 			{
+				// Init val
+				// Det box 
+				float det_x = det.front().x1
+				float det_y = det.front().y1
+				float det_weight = det.front().x2
+				float det_height = det.front().y2
+				
+				// Middle point
+				float mid_x = det_x + det_weight / 2
+				float mid_y = det_y - det_height / 2
+
+
+				// Drawing things 
+				// Draw the threshold box 
+				cv::rectangle(frame, cv::Rect rect(t_x, t_y, t_weight, t_height), cv::Scalar(255, 0, 0))
+
 				// Draw the bounding box
-				cv::rectangle(frame, cv::Point(det.front().x1, det.front().y1), cv::Point(det.front().x2, det.front().y2), cv::Scalar(0, 255, 0), 2);
+				cv::rectangle(frame, cv::Point(det_x, det_y), cv::Point(det_weight, det_height), cv::Scalar(0, 255, 0), 2);
+
+				// Draw line
+				cv::line(frame, cv::Point(mid_x, mid_y), cv::Point(t_x + t_weight/2, t_y - t_height /2), cv::Scalar(0, 0, 255), 2);
 
 				// Put the trackID text on the top-left corner of the bounding box
-				std::string trackID_text = std::to_string(det.front().trackID);
-				int font_face = cv::FONT_HERSHEY_SIMPLEX;
-				double font_scale = 0.5;
-				int thickness = 1;
-				int baseline = 0;
-				cv::Size text_size = cv::getTextSize(trackID_text, font_face, font_scale, thickness, &baseline);
-				cv::Point text_origin(det.front().x1, det.front().y1 - 5); // slightly above the top-left corner
-
+				cv::Size text_size = cv::getTextSize(std::to_string(det.front().trackID), cv::FONT_HERSHEY_SIMPLEX, 0.5, 1, 0);
+				cv::Point text_origin(det_x, det_y - 5); // slightly above the top-left corner
 				cv::putText(frame, trackID_text, text_origin, font_face, font_scale, cv::Scalar(255, 0, 0), thickness);
+			
+				// Control car 
+				if (mid_x <= t_x)
+				{
+					my_car.turn_left();
+				}
+				else if (mid_x > t_x + t_weight)
+				{
+					my_car.turn_right();
+				}
+				if (mid_y >= t_y)
+				{
+					my_car.go_forward();
+				}
+				else if (mid_y < t_y)
+				{
+					my_car.go_backward();
+				}
+
 			}
 
 			cv::imshow("Detected Objects", frame);
@@ -73,44 +111,6 @@ int main()
 		i++;
 	}
 	capture.release();
-
-    // Initalize car
-    car my_car;
-
-    cout << "Strating demo now! Press CTRL+C to exit" << endl;
-    std::cout << "1. Turn right!" << std::endl;
-    std::cout << "2. Turn left!" << std::endl;
-    std::cout << "3. Go forward!" << std::endl;
-    std::cout << "4. Go backward!" << std::endl;
-
-    while (!end_this_program)
-    {
-        int choice;
-        std::cout << "Enter your choice to control the car: " << std::endl;
-        std::cin >> choice;
-
-        switch (choice)
-        {
-        case 1:
-            my_car.turn_right();
-            break;
-        case 2:
-            my_car.turn_left();
-            break;
-        case 3:
-            my_car.go_forward();
-            break;
-        case 4:
-            my_car.go_backward();
-            break;
-
-        default:
-            std::cout << "Invalid choice, please try again!" << std::endl;
-            break;
-        }
-
-        delay(1);
-    }
 	
 	return 0;
 }
