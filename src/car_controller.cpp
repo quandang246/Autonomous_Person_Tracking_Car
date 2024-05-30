@@ -16,6 +16,7 @@ car::car()
 }
 car::~car()
 {
+    refresh();
     GPIO::cleanup();
 }
 
@@ -23,32 +24,24 @@ void car::turn_right()
 {
     std::cout << "1. Turn right!" << std::endl;
     GPIO::output(channels, {GPIO::HIGH, GPIO::LOW, GPIO::LOW, GPIO::HIGH, GPIO::HIGH, GPIO::HIGH});
-    delay(1);
-    refresh();
 }
 
 void car::turn_left()
 {
     std::cout << "2. Turn left!" << std::endl;
     GPIO::output(channels, {GPIO::LOW, GPIO::HIGH, GPIO::HIGH, GPIO::LOW, GPIO::HIGH, GPIO::HIGH});
-    delay(1);
-    refresh();
 }
 
 void car::go_forward()
 {
     std::cout << "3. Go forward!" << std::endl;
     GPIO::output(channels, {GPIO::HIGH, GPIO::LOW, GPIO::HIGH, GPIO::LOW, GPIO::HIGH, GPIO::HIGH});
-    delay(1);
-    refresh();
 }
 
 void car::go_backward()
 {
     std::cout << "4. Go backward!" << std::endl;
     GPIO::output(channels, {GPIO::LOW, GPIO::HIGH, GPIO::LOW, GPIO::HIGH, GPIO::HIGH, GPIO::HIGH});
-    delay(1);
-    refresh();
 }
 
 void car::refresh()
