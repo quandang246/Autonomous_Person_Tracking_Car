@@ -20,7 +20,7 @@ The entire process time, from reading an image to completing DeepSORT, includes 
 | Backbone        | Before TensorRT (detection) |Before TensorRT(detection + tracking) |TensortRT(detection)| TensorRT(detection + tracking) | 
 | :-------------- | --------------- | ------------------ |--------------|------------------------------ | 
 | Yolov5s_416      | 8-9            | 4-5|10-12|9-10                         | 
-| Yolov5s-640 | 7-8             | 2-3|12-13|8-9                      | 
+| Yolov5s-640 | 7-8             | 2-3|9-10|8-9                      | 
 
 ------
 
