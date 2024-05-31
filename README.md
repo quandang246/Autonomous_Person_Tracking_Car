@@ -17,10 +17,10 @@ The Autonomous Person Tracking Car leverages YOLOv5 for object detection and Dee
 
 ## Speed
 The entire process time, from reading an image to completing DeepSORT, includes every step of image preprocessing and postprocessing. For this application, we focus on scenarios where only one individual is being tracked, with a maximum of five people in the frame. All results are processed and obtained on the Jetson Nano.
-| Backbone        | before TensorRT without tracking |before TensorRT with tracking |TensortRT(detection)| TensorRT(detection + tracking) | FPS(detection + tracking) |
-| :-------------- | --------------- | ------------------ |--------------|------------------------------ | ------------------------- |
-| Yolov5s_416      | 100ms           | 0.9s|10-15ms|100-150ms                          | 8 ~ 9                   |
-| Yolov5s-640 | 120ms             | 1s|18-20ms|100-150ms                      | 8 ~ 9                     |
+| Backbone        | Before TensorRT (detection) |Before TensorRT(detection + tracking) |TensortRT(detection)| TensorRT(detection + tracking) | 
+| :-------------- | --------------- | ------------------ |--------------|------------------------------ | 
+| Yolov5s_416      | 8-9            | 4-5|10-12|9-10                         | 
+| Yolov5s-640 | 7-8             | 2-3|12-13|8-9                      | 
 
 ------
 
