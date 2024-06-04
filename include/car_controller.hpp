@@ -22,24 +22,32 @@ class car
 {
 private:
     // Pinout (Jetson nano)
-    // IN4 - 12 - 79
-    // IN3 - 13 - 14
-    // IN2 - 16 - 232
-    // IN1 - 18 - 15
-    // ENA - 33 - 38
-    // ENB - 32 - 168
+    // Motor 1 - 36, 38 / 40
+    // Motor 2 - 19, 21 / 23
+    // Motor 3 - 22, 24 / 26
+    // Motor 4 - 11, 13 / 15 
 
-    std::vector<int> channels = {12, 13, 16, 18, 33, 32}; // or std::vector<std::string>
+    std::vector<int> channels = {36, 38, 40, 19, 21, 23, 22, 24, 26, 11, 13, 15}; // or std::vector<std::string>
 
 public:
     car();
     ~car();
 
-    void turn_right();
-    void turn_left();
     void go_forward();
     void go_backward();
+
+    void sideways_right();
+    void sideways_left();
+    
+    void diagonally_top_left();
+    void diagonally_top_right();
+    void diagonally_bottom_right();
+    void diagonally_bottom_left();
+
+    void rotation();
+    
     void refresh();
+
 };
 
 #endif  // CAR_CONTROLLER_HPP

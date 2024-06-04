@@ -14,10 +14,10 @@ using namespace cv;
 int main()
 {
 	// Initalize car
-    car my_car;
+	car my_car;
 
 	// Define threshold frame width = 1280, height = 720
-	int t_x = 630, t_y = 370, t_weight = 20, t_height = 20; 
+	int t_x = 590, t_y = 410, t_weight = 100, t_height = 100;
 
 	// calculate every person's (id,(up_num,down_num,average_x,average_y))
 	map<int, vector<int>> personstate;
@@ -54,55 +54,82 @@ int main()
 			auto end = std::chrono::system_clock::now();
 			int delay_infer = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 			std::cout << "delay_infer:" << delay_infer << "ms" << std::endl;
-			std::cout << "FPS: "  << 1000.0/delay_infer << std::endl;
+			std::cout << "FPS: " << 1000.0 / delay_infer << std::endl;
 
 			if (!det.empty())
 			{
 				// Init val
-				// Det box 
-				float det_x = det.front().x1
-				float det_y = det.front().y1
-				float det_weight = det.front().x2
-				float det_height = det.front().y2
-				
+				// Det box
+				float det_x = det.front().x1 float det_y = det.front().y1 float det_weight = det.front().x2 float det_height = det.front().y2;
+
 				// Middle point
-				float mid_x = det_x + det_weight / 2
-				float mid_y = det_y - det_height / 2
+				float mid_x = det_x + det_weight / 2 float mid_y = det_y - det_height / 2;
 
-
-				// Drawing things 
-				// Draw the threshold box 
+				// Drawing things
+				// Draw the threshold box
 				cv::rectangle(frame, cv::Rect rect(t_x, t_y, t_weight, t_height), cv::Scalar(255, 0, 0))
 
-				// Draw the bounding box
-				cv::rectangle(frame, cv::Point(det_x, det_y), cv::Point(det_weight, det_height), cv::Scalar(0, 255, 0), 2);
+					// Draw the bounding box
+					cv::rectangle(frame, cv::Point(det_x, det_y), cv::Point(det_weight, det_height), cv::Scalar(0, 255, 0), 2);
 
 				// Draw line
-				cv::line(frame, cv::Point(mid_x, mid_y), cv::Point(t_x + t_weight/2, t_y - t_height /2), cv::Scalar(0, 0, 255), 2);
+				cv::line(frame, cv::Point(mid_x, mid_y), cv::Point(t_x + t_weight / 2, t_y - t_height / 2), cv::Scalar(0, 0, 255), 2);
 
 				// Put the trackID text on the top-left corner of the bounding box
 				cv::Size text_size = cv::getTextSize(std::to_string(det.front().trackID), cv::FONT_HERSHEY_SIMPLEX, 0.5, 1, 0);
 				cv::Point text_origin(det_x, det_y - 5); // slightly above the top-left corner
 				cv::putText(frame, trackID_text, text_origin, font_face, font_scale, cv::Scalar(255, 0, 0), thickness);
-			
-				// Control car 
-				if (mid_x <= t_x)
-				{
-					my_car.turn_left();
-				}
-				else if (mid_x > t_x + t_weight)
-				{
-					my_car.turn_right();
-				}
-				if (mid_y >= t_y)
-				{
-					my_car.go_forward();
-				}
-				else if (mid_y < t_y)
-				{
-					my_car.go_backward();
-				}
 
+				// Control car
+				if (det_x < t_x)
+				{
+					if (det_y > t_y)
+					{
+						car.diagonally_top_left();
+					}
+					else if (det_y <= t_y && det_y >= t_y - t_height)
+					{
+						car.sideways_left();
+					}
+					else
+					{
+						car.diagonally_bottom_left();
+					}
+				}
+				else if (det_x >= t_x && det_x <= t_x + t_weight)
+				{
+					if (det_y > t_y)
+					{
+						car.go_forward();
+					}
+					else if (det_y <= t_y && det_y >= t_y - t_height)
+					{
+						car.refresh();
+					}
+					else
+					{
+						car.go_backward();
+					}
+				}
+				else
+				{
+					if (det_y > t_y)
+					{
+						car.diagonally_top_right();
+					}
+					else if (det_y <= t_y && det_y >= t_y - t_height)
+					{
+						car.sideways_right();
+					}
+					else
+					{
+						car.diagonally_bottom_right();
+					}
+				}
+			}
+			else 
+			{
+				car.rotation();
 			}
 
 			cv::imshow("Detected Objects", frame);
@@ -111,6 +138,6 @@ int main()
 		i++;
 	}
 	capture.release();
-	
+
 	return 0;
 }
