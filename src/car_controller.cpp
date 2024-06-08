@@ -16,6 +16,7 @@ car::car()
 }
 car::~car()
 {
+    refresh();
     GPIO::cleanup();
 }
 
