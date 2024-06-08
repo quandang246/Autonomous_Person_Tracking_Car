@@ -16,8 +16,8 @@ int main()
 	// Initalize car
 	car my_car;
 
-	// Define threshold frame width = 1280, height = 720
-	int t_x = 590, t_y = 410, t_weight = 100, t_height = 100;
+	// Define threshold frame width = 1280, height = 960
+	int t_x1 = 620, t_y1 = 500, t_x2 = 660, t_y2 = 460;
 
 	// calculate every person's (id,(up_num,down_num,average_x,average_y))
 	map<int, vector<int>> personstate;
@@ -31,12 +31,20 @@ int main()
 	cv::Mat frame;
 
 	// Path to sample videos
-	frame = capture.open("/home/quandang246/project/Autonomous_Person_Tracking_Car/test_videos/1_people_and_obstacle.mp4");
+	frame = capture.open(0);
 	if (!capture.isOpened())
 	{
 		std::cout << "can not open" << std::endl;
 		return -1;
 	}
+	// Get the width and height of the frames the camera captures.
+	double frame_width = capture.get(cv::CAP_PROP_FRAME_WIDTH);
+	double frame_height = capture.get(cv::CAP_PROP_FRAME_HEIGHT);
+
+	// Print the frame size.
+	std::cout << "Frame width: " << frame_width << std::endl;
+	std::cout << "Frame height: " << frame_height << std::endl;
+
 	capture.read(frame);
 	std::vector<DetectBox> det;
 	auto start_draw_time = std::chrono::system_clock::now();
@@ -60,80 +68,88 @@ int main()
 			{
 				// Init val
 				// Det box
-				float det_x = det.front().x1 float det_y = det.front().y1 float det_weight = det.front().x2 float det_height = det.front().y2;
+				float det_x1 = det.front().x1;
+				float det_y1 = det.front().y1;
+				float det_x2 = det.front().x2;
+				float det_y2 = det.front().y2;
 
 				// Middle point
-				float mid_x = det_x + det_weight / 2 float mid_y = det_y - det_height / 2;
+				float mid_x = det_x1 + (det_x2 - det_x1) / 2;
+				float mid_y = det_y2 + (det_y1 - det_y2) / 2;
 
 				// Drawing things
 				// Draw the threshold box
-				cv::rectangle(frame, cv::Rect rect(t_x, t_y, t_weight, t_height), cv::Scalar(255, 0, 0))
+				cv::rectangle(frame, cv::Point(t_x1, t_y1), cv::Point(t_x2, t_y2), cv::Scalar(255, 0, 0), 2);
 
-					// Draw the bounding box
-					cv::rectangle(frame, cv::Point(det_x, det_y), cv::Point(det_weight, det_height), cv::Scalar(0, 255, 0), 2);
+				// Draw the bounding box
+				cv::rectangle(frame, cv::Point(det_x1, det_y1), cv::Point(det_x2, det_y2), cv::Scalar(0, 255, 0), 2);
 
 				// Draw line
-				cv::line(frame, cv::Point(mid_x, mid_y), cv::Point(t_x + t_weight / 2, t_y - t_height / 2), cv::Scalar(0, 0, 255), 2);
+				cv::line(frame, cv::Point(mid_x, mid_y), cv::Point(t_x1 + (t_x2 - t_x1) / 2, t_y2 + (t_y1 - t_y2) / 2), cv::Scalar(0, 0, 255), 2);
 
 				// Put the trackID text on the top-left corner of the bounding box
 				cv::Size text_size = cv::getTextSize(std::to_string(det.front().trackID), cv::FONT_HERSHEY_SIMPLEX, 0.5, 1, 0);
-				cv::Point text_origin(det_x, det_y - 5); // slightly above the top-left corner
-				cv::putText(frame, trackID_text, text_origin, font_face, font_scale, cv::Scalar(255, 0, 0), thickness);
+				cv::Point text_origin(det_x1, det_y1 - 5); // slightly above the top-left corner
+				cv::putText(frame, std::to_string(det.front().trackID), text_origin, cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 0, 0), 1);
 
 				// Control car
-				if (det_x < t_x)
+				if (mid_x < t_x1)
 				{
-					if (det_y > t_y)
+					if (mid_y > t_y1)
 					{
-						car.diagonally_top_left();
+						my_car.diagonally_top_left();
 					}
-					else if (det_y <= t_y && det_y >= t_y - t_height)
+					else if (mid_y <= t_y1 && mid_y >= t_y2)
 					{
-						car.sideways_left();
+						my_car.sideways_left();
 					}
 					else
 					{
-						car.diagonally_bottom_left();
+						my_car.diagonally_bottom_left();
 					}
 				}
-				else if (det_x >= t_x && det_x <= t_x + t_weight)
+				else if (mid_x >= t_x1 && mid_x <= t_x2)
 				{
-					if (det_y > t_y)
+					if (mid_y > t_y1)
 					{
-						car.go_forward();
+						my_car.go_forward();
 					}
-					else if (det_y <= t_y && det_y >= t_y - t_height)
+					else if (mid_y <= t_y1 && mid_y >= t_y2)
 					{
-						car.refresh();
+						my_car.refresh();
 					}
 					else
 					{
-						car.go_backward();
+						my_car.go_backward();
 					}
 				}
 				else
 				{
-					if (det_y > t_y)
+					if (mid_y > t_y1)
 					{
-						car.diagonally_top_right();
+						my_car.diagonally_top_right();
 					}
-					else if (det_y <= t_y && det_y >= t_y - t_height)
+					else if (mid_y <= t_y1 && mid_y >= t_y2)
 					{
-						car.sideways_right();
+						my_car.sideways_right();
 					}
 					else
 					{
-						car.diagonally_bottom_right();
+						my_car.diagonally_bottom_right();
 					}
 				}
 			}
-			else 
+			else
 			{
-				car.rotation();
+				my_car.rotation();
 			}
 
 			cv::imshow("Detected Objects", frame);
-			cv::waitKey(1); // Wait for 1 millisecond (or any other suitable duration)
+			if (waitKey(10) == 27)
+			{
+				cout << "Esc key is pressed by user. Stoppig the video" << endl;
+				break;
+			}
 		}
 		i++;
 	}
