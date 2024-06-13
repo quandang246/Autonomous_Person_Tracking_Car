@@ -10,20 +10,18 @@
 #include <cmath>
 #include <time.h>
 using namespace cv;
-
-/*
 int main()
 {
-	// Initalize car
+	// Initialize car
 	car my_car;
 
 	// Define threshold frame width = 1280, height = 960
-	int t_x1 = 620, t_y1 = 500, t_x2 = 660, t_y2 = 460;
+	int t_x1 = 600, t_y1 = 520, t_x2 = 680, t_y2 = 440;
 
-	// calculate every person's (id,(up_num,down_num,average_x,average_y))
+	// Calculate every person's (id,(up_num,down_num,average_x,average_y))
 	map<int, vector<int>> personstate;
 	map<int, int> classidmap;
-	bool is_first = true;
+
 	char *yolo_engine = "/home/quandang246/project/Autonomous_Person_Tracking_Car/resources/yolov5s.engine";
 	char *sort_engine = "/home/quandang246/project/Autonomous_Person_Tracking_Car/resources/deepsort.engine";
 	float conf_thre = 0.4;
@@ -32,12 +30,13 @@ int main()
 	cv::Mat frame;
 
 	// Path to sample videos
-	frame = capture.open("/home/quandang246/project/Autonomous_Person_Tracking_Car/test_videos/1_people_and_obstacle.mp4");
+	frame = capture.open(0);
 	if (!capture.isOpened())
 	{
 		std::cout << "can not open" << std::endl;
 		return -1;
 	}
+
 	// Get the width and height of the frames the camera captures.
 	double frame_width = capture.get(cv::CAP_PROP_FRAME_WIDTH);
 	double frame_height = capture.get(cv::CAP_PROP_FRAME_HEIGHT);
@@ -48,11 +47,10 @@ int main()
 
 	capture.read(frame);
 	std::vector<DetectBox> det;
-	auto start_draw_time = std::chrono::system_clock::now();
 
-	clock_t start_draw, end_draw;
-	start_draw = clock();
 	int i = 0;
+	std::string car_direction = "Stationary"; // Initialize car direction
+
 	while (capture.read(frame))
 	{
 		if (i % 3 == 0)
@@ -62,7 +60,7 @@ int main()
 			yosort.TrtDetect(frame, conf_thre, det);
 			auto end = std::chrono::system_clock::now();
 			int delay_infer = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-			std::cout << "delay_infer:" << delay_infer << "ms" << std::endl;
+			// std::cout << "delay_infer:" << delay_infer << "ms" << std::endl;
 			std::cout << "FPS: " << 1000.0 / delay_infer << std::endl;
 
 			if (!det.empty())
@@ -77,6 +75,10 @@ int main()
 				// Middle point
 				float mid_x = det_x1 + (det_x2 - det_x1) / 2;
 				float mid_y = det_y2 + (det_y1 - det_y2) / 2;
+
+				// Display the coordinates
+                std::string coordinate_text = "Coordinate: (" + std::to_string(mid_x) + ";" + std::to_string(mid_y) + ")";
+                cv::putText(frame, coordinate_text, cv::Point(frame.cols - 300, 90), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 0, 0), 2);
 
 				// Drawing things
 				// Draw the threshold box
@@ -98,57 +100,71 @@ int main()
 				{
 					if (mid_y > t_y1)
 					{
-						my_car.diagonally_top_left();
+						my_car.diagonally_bottom_left();
+						car_direction = "Diagonally Bottom Left";
 					}
 					else if (mid_y <= t_y1 && mid_y >= t_y2)
 					{
 						my_car.sideways_left();
+						car_direction = "Sideways Left";
 					}
 					else
 					{
-						my_car.diagonally_bottom_left();
+						my_car.diagonally_top_left();
+						car_direction = "Diagonally Top Left";
 					}
 				}
 				else if (mid_x >= t_x1 && mid_x <= t_x2)
 				{
 					if (mid_y > t_y1)
 					{
-						my_car.go_forward();
+						my_car.go_backward();
+						car_direction = "Go Backward";
 					}
 					else if (mid_y <= t_y1 && mid_y >= t_y2)
 					{
 						my_car.refresh();
+						car_direction = "Stand Still";
 					}
 					else
 					{
-						my_car.go_backward();
+						my_car.go_forward();
+						car_direction = "Go Forward";
 					}
 				}
 				else
 				{
 					if (mid_y > t_y1)
 					{
-						my_car.diagonally_top_right();
+						my_car.diagonally_bottom_right();
+						car_direction = "Diagonally Bottom Right";
 					}
 					else if (mid_y <= t_y1 && mid_y >= t_y2)
 					{
 						my_car.sideways_right();
+						car_direction = "Sideways Right";
 					}
 					else
 					{
-						my_car.diagonally_bottom_right();
+						my_car.diagonally_top_right();
+						car_direction = "Diagonally Top Right";
 					}
 				}
 			}
 			else
 			{
-				my_car.rotation();
+				// my_car.rotation();
+				car_direction = "Stand Still";
 			}
+
+			// Display the car direction on the top right corner
+			cv::putText(frame, "FPS: " + std::to_string(1000.0 / delay_infer), cv::Point(frame.cols - 300, 30), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 0, 0), 2);
+			cv::putText(frame, "Direction: " + car_direction, cv::Point(frame.cols - 300, 60), cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(255, 0, 0), 2);
 
 			cv::imshow("Detected Objects", frame);
 			if (waitKey(10) == 27)
 			{
-				cout << "Esc key is pressed by user. Stoppig the video" << endl;
+				cout << "Esc key is pressed by user. Stopping the video" << endl;
 				break;
 			}
 		}
@@ -156,11 +172,10 @@ int main()
 	}
 	capture.release();
 
-
 	return 0;
 }
-*/
 
+/*
 int main()
 {
 	car my_car;
@@ -213,3 +228,4 @@ int main()
 
 	return 0;
 }
+*/

@@ -14,8 +14,6 @@
 
 using namespace std;
 
-static bool end_this_program = false;
-
 inline void delay(int s) { this_thread::sleep_for(chrono::seconds(s)); }
 
 class car

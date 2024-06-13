@@ -29,7 +29,7 @@ void car::go_forward()
                             GPIO::HIGH, GPIO::LOW, GPIO::HIGH,
                             GPIO::HIGH, GPIO::LOW, GPIO::HIGH});
 
-    delay(1);
+    // delay(1);
     refresh();
 }
 
@@ -43,7 +43,7 @@ void car::go_backward()
                             GPIO::HIGH, GPIO::HIGH, GPIO::LOW,
                             GPIO::HIGH, GPIO::HIGH, GPIO::LOW});
 
-    delay(1);
+    // delay(1);
     refresh();
 }
 void car::sideways_left()
@@ -55,7 +55,7 @@ void car::sideways_left()
                             GPIO::HIGH, GPIO::HIGH, GPIO::LOW,
                             GPIO::HIGH, GPIO::LOW, GPIO::HIGH});
 
-    delay(1);
+    // delay(1);
     refresh();
 }
 
@@ -68,7 +68,7 @@ void car::sideways_right()
                             GPIO::HIGH, GPIO::LOW, GPIO::HIGH,
                             GPIO::HIGH, GPIO::HIGH, GPIO::LOW});
 
-    delay(1);
+    // delay(1);
     refresh();
 }
 
@@ -82,7 +82,7 @@ void car::diagonally_top_left()
                             GPIO::HIGH, GPIO::LOW, GPIO::HIGH,
                             GPIO::LOW, GPIO::LOW, GPIO::LOW});
 
-    delay(1);
+    // delay(1);
     refresh();
 }
 
@@ -95,7 +95,7 @@ void car::diagonally_top_right()
                             GPIO::LOW, GPIO::LOW, GPIO::LOW,
                             GPIO::HIGH, GPIO::LOW, GPIO::HIGH});
 
-    delay(1);
+    // delay(1);
     refresh();
 }
 void car::diagonally_bottom_right()
@@ -107,7 +107,7 @@ void car::diagonally_bottom_right()
                             GPIO::LOW, GPIO::LOW, GPIO::LOW,
                             GPIO::HIGH, GPIO::HIGH, GPIO::LOW});
 
-    delay(1);
+    // delay(1);
     refresh();
 }
 void car::diagonally_bottom_left()
@@ -120,7 +120,7 @@ void car::diagonally_bottom_left()
                             ,
                             GPIO::LOW, GPIO::LOW, GPIO::LOW});
 
-    delay(1);
+    // delay(1);
     refresh();
 }
 
@@ -133,7 +133,7 @@ void car::rotation()
                             GPIO::HIGH, GPIO::LOW, GPIO::HIGH,
                             GPIO::HIGH, GPIO::HIGH, GPIO::LOW});
 
-    delay(1);
+    // delay(1);
     refresh();
 }
 
