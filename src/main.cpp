@@ -11,6 +11,7 @@
 #include <time.h>
 using namespace cv;
 
+/*
 int main()
 {
 	// Initalize car
@@ -155,6 +156,60 @@ int main()
 	}
 	capture.release();
 
+
+	return 0;
+}
+*/
+
+int main()
+{
+	car my_car;
+
+	bool run = true;
+
+	while (run)
+	{
+		int choice;
+
+		std::cout << "Enter a number: ";
+		std::cin >> choice;
+		switch (choice)
+		{
+		case 1:
+			my_car.go_forward();
+			break;
+		case 2:
+			my_car.go_backward();
+			break;
+		case 3:
+			my_car.sideways_left();
+			break;
+		case 4:
+			my_car.sideways_right();
+			break;
+		case 5:
+			my_car.diagonally_bottom_left();
+			break;
+		case 6:
+			my_car.diagonally_bottom_right();
+			break;
+		case 7:
+			my_car.diagonally_top_left();
+			break;
+		case 8:
+			my_car.diagonally_top_right();
+			break;
+		case 9:
+			my_car.rotation();
+			break;
+		case 10:
+			run = false;
+			break;
+		default:
+			std::cout << "Invalid choice. Please enter a number between 1 and 3." << std::endl;
+			break;
+		}
+	}
 
 	return 0;
 }
