@@ -15,7 +15,6 @@ int main()
 {
 	// Initalize car
 	car my_car;
-	car my_car;
 
 	// Define threshold frame width = 1280, height = 960
 	int t_x1 = 620, t_y1 = 500, t_x2 = 660, t_y2 = 460;
@@ -32,7 +31,7 @@ int main()
 	cv::Mat frame;
 
 	// Path to sample videos
-	frame = capture.open(0);
+	frame = capture.open("/home/quandang246/project/Autonomous_Person_Tracking_Car/test_videos/1_people_and_obstacle.mp4");
 	if (!capture.isOpened())
 	{
 		std::cout << "can not open" << std::endl;
@@ -64,7 +63,6 @@ int main()
 			int delay_infer = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 			std::cout << "delay_infer:" << delay_infer << "ms" << std::endl;
 			std::cout << "FPS: " << 1000.0 / delay_infer << std::endl;
-			std::cout << "FPS: " << 1000.0 / delay_infer << std::endl;
 
 			if (!det.empty())
 			{
@@ -75,31 +73,18 @@ int main()
 				float det_x2 = det.front().x2;
 				float det_y2 = det.front().y2;
 
-				// Det box
-				float det_x1 = det.front().x1;
-				float det_y1 = det.front().y1;
-				float det_x2 = det.front().x2;
-				float det_y2 = det.front().y2;
-
 				// Middle point
 				float mid_x = det_x1 + (det_x2 - det_x1) / 2;
 				float mid_y = det_y2 + (det_y1 - det_y2) / 2;
-				float mid_x = det_x1 + (det_x2 - det_x1) / 2;
-				float mid_y = det_y2 + (det_y1 - det_y2) / 2;
 
-				// Drawing things
-				// Draw the threshold box
-				cv::rectangle(frame, cv::Point(t_x1, t_y1), cv::Point(t_x2, t_y2), cv::Scalar(255, 0, 0), 2);
 				// Drawing things
 				// Draw the threshold box
 				cv::rectangle(frame, cv::Point(t_x1, t_y1), cv::Point(t_x2, t_y2), cv::Scalar(255, 0, 0), 2);
 
 				// Draw the bounding box
 				cv::rectangle(frame, cv::Point(det_x1, det_y1), cv::Point(det_x2, det_y2), cv::Scalar(0, 255, 0), 2);
-				cv::rectangle(frame, cv::Point(det_x1, det_y1), cv::Point(det_x2, det_y2), cv::Scalar(0, 255, 0), 2);
 
 				// Draw line
-				cv::line(frame, cv::Point(mid_x, mid_y), cv::Point(t_x1 + (t_x2 - t_x1) / 2, t_y2 + (t_y1 - t_y2) / 2), cv::Scalar(0, 0, 255), 2);
 				cv::line(frame, cv::Point(mid_x, mid_y), cv::Point(t_x1 + (t_x2 - t_x1) / 2, t_y2 + (t_y1 - t_y2) / 2), cv::Scalar(0, 0, 255), 2);
 
 				// Put the trackID text on the top-left corner of the bounding box
