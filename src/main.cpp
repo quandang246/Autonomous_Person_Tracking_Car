@@ -16,7 +16,7 @@ int main()
 	car my_car;
 
 	// Define threshold frame width = 1280, height = 960
-	int t_x1 = 600, t_y1 = 520, t_x2 = 680, t_y2 = 440;
+	int t_x1 = 600, t_y1 = 420, t_x2 = 680, t_y2 = 340;
 
 	// Calculate every person's (id,(up_num,down_num,average_x,average_y))
 	map<int, vector<int>> personstate;
@@ -30,7 +30,7 @@ int main()
 	cv::Mat frame;
 
 	// Path to sample videos
-	frame = capture.open(0);
+	frame = capture.open("/home/quandang246/project/Autonomous_Person_Tracking_Car/test_videos/1_people_and_obstacle.mp4");
 	if (!capture.isOpened())
 	{
 		std::cout << "can not open" << std::endl;
@@ -74,7 +74,7 @@ int main()
 
 				// Middle point
 				float mid_x = det_x1 + (det_x2 - det_x1) / 2;
-				float mid_y = det_y2 + (det_y1 - det_y2) / 2;
+				float mid_y = (det_y2 + (det_y1 - det_y2) / 2) * 2 / 3;
 
 				// Display the coordinates
                 std::string coordinate_text = "Coordinate: (" + std::to_string(mid_x) + ";" + std::to_string(mid_y) + ")";
@@ -100,8 +100,8 @@ int main()
 				{
 					if (mid_y > t_y1)
 					{
-						my_car.diagonally_bottom_left();
-						car_direction = "Diagonally Bottom Left";
+						my_car.diagonally_top_left();
+						car_direction = "Diagonally Top Left";
 					}
 					else if (mid_y <= t_y1 && mid_y >= t_y2)
 					{
@@ -110,16 +110,16 @@ int main()
 					}
 					else
 					{
-						my_car.diagonally_top_left();
-						car_direction = "Diagonally Top Left";
+						my_car.diagonally_bottom_left();
+						car_direction = "Diagonally Bottom Left";
 					}
 				}
 				else if (mid_x >= t_x1 && mid_x <= t_x2)
 				{
 					if (mid_y > t_y1)
 					{
-						my_car.go_backward();
-						car_direction = "Go Backward";
+						my_car.go_forward();
+						car_direction = "Go Forward";
 					}
 					else if (mid_y <= t_y1 && mid_y >= t_y2)
 					{
@@ -128,16 +128,16 @@ int main()
 					}
 					else
 					{
-						my_car.go_forward();
-						car_direction = "Go Forward";
+						my_car.go_backward();
+						car_direction = "Go Backward";
 					}
 				}
 				else
 				{
 					if (mid_y > t_y1)
 					{
-						my_car.diagonally_bottom_right();
-						car_direction = "Diagonally Bottom Right";
+						my_car.diagonally_top_right	();
+						car_direction = "Diagonally Top Right";
 					}
 					else if (mid_y <= t_y1 && mid_y >= t_y2)
 					{
@@ -146,8 +146,8 @@ int main()
 					}
 					else
 					{
-						my_car.diagonally_top_right();
-						car_direction = "Diagonally Top Right";
+						my_car.diagonally_bottom_right();
+						car_direction = "Diagonally Bottom Right";
 					}
 				}
 			}
