@@ -20,31 +20,6 @@ car::~car()
     GPIO::cleanup();
 }
 
-void car::sideways_right()
-{
-    // std::vector<int> channels = {36, 38, 40, 19, 21, 23, 22, 24, 26, 11, 13, 15};
-    // 1(1)/2(-1)/3(-1)/4(1)
-    std::cout << "Moving sideways right!" << std::endl;
-    GPIO::output(channels, {GPIO::HIGH, GPIO::LOW, GPIO::HIGH,
-                            GPIO::LOW, GPIO::HIGH, GPIO::HIGH,
-                            GPIO::LOW, GPIO::HIGH, GPIO::HIGH,
-                            GPIO::HIGH, GPIO::LOW, GPIO::HIGH});
-    
-    refresh();
-}
-
-void car::sideways_left()
-{
-    // 1(-1)/2(1)/3(1)/4(-1)
-    std::cout << "Moving sideways left!" << std::endl;
-    GPIO::output(channels, {GPIO::LOW, GPIO::HIGH, GPIO::HIGH,
-                            GPIO::HIGH, GPIO::LOW, GPIO::HIGH,
-                            GPIO::HIGH, GPIO::LOW, GPIO::HIGH,
-                            GPIO::LOW, GPIO::HIGH, GPIO::HIGH});
-    
-    refresh();
-}
-
 void car::go_forward()
 {
     // 1(1)/2(1)/3(1)/4(1)
@@ -53,21 +28,50 @@ void car::go_forward()
                             GPIO::HIGH, GPIO::LOW, GPIO::HIGH,
                             GPIO::HIGH, GPIO::LOW, GPIO::HIGH,
                             GPIO::HIGH, GPIO::LOW, GPIO::HIGH});
-    
+
+    // delay(1);
     refresh();
 }
 
 void car::go_backward()
 {
     // 1(-1)/2(-1)/3(-1)/4(-1)
+
     std::cout << "Moving backward!" << std::endl;
-    GPIO::output(channels, {GPIO::LOW, GPIO::HIGH, GPIO::HIGH,
-                            GPIO::LOW, GPIO::HIGH, GPIO::HIGH,
-                            GPIO::LOW, GPIO::HIGH, GPIO::HIGH,
-                            GPIO::LOW, GPIO::HIGH, GPIO::HIGH});
-    
+    GPIO::output(channels, {GPIO::HIGH, GPIO::HIGH, GPIO::LOW,
+                            GPIO::HIGH, GPIO::HIGH, GPIO::LOW,
+                            GPIO::HIGH, GPIO::HIGH, GPIO::LOW,
+                            GPIO::HIGH, GPIO::HIGH, GPIO::LOW});
+
+    // delay(1);
     refresh();
 }
+void car::sideways_left()
+{
+    // 1(1)/2(-1)/3(-1)/4(1)
+    std::cout << "Moving sideways left!" << std::endl;
+    GPIO::output(channels, {GPIO::HIGH, GPIO::LOW, GPIO::HIGH,
+                            GPIO::HIGH, GPIO::HIGH, GPIO::LOW,
+                            GPIO::HIGH, GPIO::HIGH, GPIO::LOW,
+                            GPIO::HIGH, GPIO::LOW, GPIO::HIGH});
+
+    // delay(1);
+    refresh();
+}
+
+void car::sideways_right()
+{
+    // 1(-1)/2(1)/3(1)/4(-1)
+    std::cout << "Moving sideways right!" << std::endl;
+    GPIO::output(channels, {GPIO::HIGH, GPIO::HIGH, GPIO::LOW,
+                            GPIO::HIGH, GPIO::LOW, GPIO::HIGH,
+                            GPIO::HIGH, GPIO::LOW, GPIO::HIGH,
+                            GPIO::HIGH, GPIO::HIGH, GPIO::LOW});
+
+    // delay(1);
+    refresh();
+}
+
 
 void car::diagonally_top_left()
 {
@@ -77,7 +81,8 @@ void car::diagonally_top_left()
                             GPIO::HIGH, GPIO::LOW, GPIO::HIGH,
                             GPIO::HIGH, GPIO::LOW, GPIO::HIGH,
                             GPIO::LOW, GPIO::LOW, GPIO::LOW});
-    
+
+    // delay(1);
     refresh();
 }
 
@@ -89,18 +94,20 @@ void car::diagonally_top_right()
                             GPIO::LOW, GPIO::LOW, GPIO::LOW,
                             GPIO::LOW, GPIO::LOW, GPIO::LOW,
                             GPIO::HIGH, GPIO::LOW, GPIO::HIGH});
-    
+
+    // delay(1);
     refresh();
 }
 void car::diagonally_bottom_right()
 {
-    // 1(-11)/2(0)/3(0)/4(-1)
+    // 1(-1)/2(0)/3(0)/4(-1)
     std::cout << "Moving diagonally bottom right!" << std::endl;
-    GPIO::output(channels, {GPIO::LOW, GPIO::HIGH, GPIO::HIGH,
+    GPIO::output(channels, {GPIO::HIGH, GPIO::HIGH, GPIO::LOW,
                             GPIO::LOW, GPIO::LOW, GPIO::LOW,
                             GPIO::LOW, GPIO::LOW, GPIO::LOW,
-                            GPIO::LOW, GPIO::HIGH, GPIO::HIGH});
-    
+                            GPIO::HIGH, GPIO::HIGH, GPIO::LOW});
+
+    // delay(1);
     refresh();
 }
 void car::diagonally_bottom_left()
@@ -108,10 +115,12 @@ void car::diagonally_bottom_left()
     // 1(0)/2(-1)/3(-1)/4(0)
     std::cout << "Moving diagonally bottom left!" << std::endl;
     GPIO::output(channels, {GPIO::LOW, GPIO::LOW, GPIO::LOW,
-                            GPIO::LOW, GPIO::HIGH, GPIO::HIGH,
-                            GPIO::LOW, GPIO::HIGH, GPIO::HIGH,
+                            GPIO::HIGH, GPIO::HIGH, GPIO::LOW,
+                            GPIO::HIGH, GPIO::HIGH, GPIO::LOW
+                            ,
                             GPIO::LOW, GPIO::LOW, GPIO::LOW});
-    
+
+    // delay(1);
     refresh();
 }
 
@@ -120,10 +129,11 @@ void car::rotation()
     // 1(1)/2(-1)/3(1)/4(-1)
     std::cout << "Rotating" << std::endl;
     GPIO::output(channels, {GPIO::HIGH, GPIO::LOW, GPIO::HIGH,
-                            GPIO::LOW, GPIO::HIGH, GPIO::HIGH,
+                            GPIO::HIGH, GPIO::HIGH, GPIO::LOW,
                             GPIO::HIGH, GPIO::LOW, GPIO::HIGH,
-                            GPIO::LOW, GPIO::HIGH, GPIO::HIGH});
-    
+                            GPIO::HIGH, GPIO::HIGH, GPIO::LOW});
+
+    // delay(1);
     refresh();
 }
 
