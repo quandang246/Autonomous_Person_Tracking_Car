@@ -25,6 +25,8 @@ private:
     // Motor 3 - 22, 24 / 26
     // Motor 4 - 11, 13 / 15
 
+    int delay_time;
+
     std::vector<int> channels = {
         40, 38, 36, // Motor 1
         23, 21, 19, // Motor 2

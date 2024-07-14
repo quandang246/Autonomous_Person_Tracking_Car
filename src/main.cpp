@@ -16,7 +16,7 @@ int main()
 	car my_car;
 
 	// Define threshold frame width = 1280, height = 960
-	int t_x1 = 600, t_y1 = 420, t_x2 = 680, t_y2 = 340;
+	int t_x1 = 500, t_y1 = 520, t_x2 = 780, t_y2 = 240;
 
 	// Calculate every person's (id,(up_num,down_num,average_x,average_y))
 	map<int, vector<int>> personstate;
@@ -30,7 +30,7 @@ int main()
 	cv::Mat frame;
 
 	// Path to sample videos
-	frame = capture.open("/home/quandang246/project/Autonomous_Person_Tracking_Car/test_videos/1_people_and_obstacle.mp4");
+	frame = capture.open(0);
 	if (!capture.isOpened())
 	{
 		std::cout << "can not open" << std::endl;
@@ -164,6 +164,7 @@ int main()
 			cv::imshow("Detected Objects", frame);
 			if (waitKey(10) == 27)
 			{
+				my_car.refresh();
 				cout << "Esc key is pressed by user. Stopping the video" << endl;
 				break;
 			}
